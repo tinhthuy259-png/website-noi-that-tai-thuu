@@ -147,4 +147,26 @@ footer{background:var(--choc);padding:80px 64px 40px}
     <div class="fb-links"><a href="#">Chính Sách Bảo Mật</a><a href="#">Điều Khoản Dịch Vụ</a></div>
   </div>
 </footer>
+<script src="api.js"></script>
+<script>
+(async function() {
+  const projects = await fetchAPI('projects?populate=image&sort=createdAt:desc&status=published');
+  if (projects && projects.length > 0) {
+    const grid = document.querySelector('.prj-grid');
+    if (grid) {
+      grid.innerHTML = projects.map(p => {
+        const img = getImageUrl(p, 'image') || 'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=500&q=80';
+        const cat = p.category || 'Dự Án';
+        return `<div class="prj-card">
+          <img src="${img}" alt="${p.name}">
+          <div class="prj-overlay">
+            <span class="label" style="color:rgba(255,255,255,.7)">${cat}</span>
+            <h3 style="color:#fff;font-size:18px;font-weight:600;margin-top:6px">${p.name}</h3>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+})();
+</script>
 </body></html>

@@ -148,4 +148,24 @@ footer{background:var(--choc);padding:80px 64px 40px}
     <div class="fb-links"><a href="#">Chính Sách Bảo Mật</a><a href="#">Điều Khoản Dịch Vụ</a></div>
   </div>
 </footer>
+<script src="api.js"></script>
+<script>
+(async function() {
+  const products = await fetchAPI('products?populate=image&sort=createdAt:desc&status=published');
+  if (products && products.length > 0) {
+    const grid = document.querySelector('.sp-grid');
+    if (grid) {
+      grid.innerHTML = products.map(p => {
+        const img = getImageUrl(p, 'image') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80';
+        return `<div class="sp-item">
+          <img src="${img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          ${p.price ? '<p style="color:rgba(0,0,0,.5);font-size:14px">Từ ' + formatPrice(p.price) + '</p>' : ''}
+          ${p.material ? '<p style="font-size:12px;color:rgba(0,0,0,.4);margin-top:4px">' + p.material + '</p>' : ''}
+        </div>`;
+      }).join('');
+    }
+  }
+})();
+</script>
 </body></html>

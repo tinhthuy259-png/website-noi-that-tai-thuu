@@ -171,4 +171,16 @@ footer{background:var(--choc);padding:80px 64px 40px}
     <div class="fb-links"><a href="#">Chính Sách Bảo Mật</a><a href="#">Điều Khoản Dịch Vụ</a></div>
   </div>
 </footer>
+<script src="api.js"></script>
+<script>
+(async function() {
+  const gs = await fetchAPI('global-setting');
+  if (gs) {
+    const contactBox = document.querySelector('#lien-he p[style*="line-height:2.2"]');
+    if (contactBox) {
+      contactBox.innerHTML = `📍 ${gs.address || 'Số 98, Thôn Mã Kiều, Thanh Oai, Hà Nội'}<br>📞 ${gs.phoneNumber || '+84 867 141 398'}<br>✉️ ${gs.email || 'noithattaithu@gmail.com'}<br>🕐 ${gs.workingHours || 'Thứ 2 – Thứ 7: 8:00 – 18:00'}`;
+    }
+  }
+})();
+</script>
 </body></html>

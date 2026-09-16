@@ -162,6 +162,73 @@ footer{background:var(--choc);padding:80px 64px 40px}
     <p>© 2026 Công Ty TNHH Nội Thất Tài Thu. Bảo lưu mọi quyền.</p>
     <div class="fb-links"><a href="#">Chính Sách Bảo Mật</a><a href="#">Điều Khoản Dịch Vụ</a></div>
   </div>
+<section id="tin-tuc-section" class="bg-white" style="display:none">
+  <div style="text-align:center">
+    <span class="label" style="margin-bottom:16px">Blog & Tin Tức</span>
+    <h2 class="sec-h2" style="text-align:center">Kiến Thức Nội Thất Hữu Ích</h2>
+  </div>
+  <div id="articles-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px"></div>
+  <div style="text-align:center;margin-top:48px"><a href="TinTuc.html" class="btn btn-od">Xem Tất Cả Bài Viết</a></div>
+</section>
+
+<script src="api.js"></script>
+<script>
+(async function() {
+  // Load bài viết mới nhất
+  const articles = await fetchAPI('articles?populate=coverImage&sort=createdAt:desc&pagination[limit]=3&status=published');
+  if (articles && articles.length > 0) {
+    document.getElementById('tin-tuc-section').style.display = '';
+    const grid = document.getElementById('articles-grid');
+    grid.innerHTML = articles.map(a => {
+      const img = getImageUrl(a, 'coverImage') || 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80';
+      const cat = a.category || 'Tin Tức';
+      return `<article style="cursor:pointer">
+        <div style="aspect-ratio:16/10;overflow:hidden;margin-bottom:20px"><img src="${img}" alt="${a.title}" style="width:100%;height:100%;object-fit:cover;transition:transform .5s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"></div>
+        <span class="label" style="font-size:10px;margin-bottom:10px">${cat}</span>
+        <h3 style="font-size:20px;font-weight:600;margin-bottom:10px;line-height:1.4">${a.title}</h3>
+        <p style="font-size:13px;color:rgba(45,33,24,.6);line-height:1.7">${truncateText(a.description, 120)}</p>
+      </article>`;
+    }).join('');
+  }
+
+  // Load sản phẩm mới nhất vào grid dịch vụ (nếu có)
+  const products = await fetchAPI('products?populate=image&sort=createdAt:desc&pagination[limit]=4&status=published');
+  if (products && products.length > 0) {
+    const srvGrid = document.querySelector('.srv-grid');
+    if (srvGrid) {
+      srvGrid.innerHTML = products.map(p => {
+        const img = getImageUrl(p, 'image') || 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80';
+        return `<div class="srv-card">
+          <img src="${img}" alt="${p.name}" style="aspect-ratio:4/3;object-fit:cover;margin-bottom:16px">
+          <h3>${p.name}</h3>
+          <p>${truncateText(p.shortDescription, 100)}</p>
+          ${p.price ? '<p style="color:var(--gold);font-weight:600;margin-top:8px">Từ ' + formatPrice(p.price) + '</p>' : ''}
+          <a href="SanPham.html" class="label" style="font-size:10px;margin-top:12px">Xem Chi Tiết →</a>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // Load dự án mới nhất
+  const projects = await fetchAPI('projects?populate=image&sort=createdAt:desc&pagination[limit]=4&status=published');
+  if (projects && projects.length > 0) {
+    const prjGrid = document.querySelector('.prj-grid');
+    if (prjGrid) {
+      prjGrid.innerHTML = projects.map(p => {
+        const img = getImageUrl(p, 'image') || 'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=500&q=80';
+        const cat = p.category || 'Dự Án';
+        return `<div class="prj-card">
+          <img src="${img}" alt="${p.name}">
+          <div class="prj-overlay">
+            <span class="label" style="color:rgba(255,255,255,.7)">${cat}</span>
+            <h3 style="color:#fff;font-size:18px;font-weight:600;margin-top:6px">${p.name}</h3>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+})();
+</script>
 </footer>
 </body>
 </html>
