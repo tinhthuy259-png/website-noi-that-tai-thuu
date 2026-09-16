@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://noithattaithu.online/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://noithattaithu.online/SanPham</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://noithattaithu.online/DuAn</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://noithattaithu.online/VeChungToi</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://noithattaithu.online/ThiCong</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://noithattaithu.online/ThietKe</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>
